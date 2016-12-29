@@ -26,4 +26,10 @@ public interface IQuery {
     List<Integer> retrieveQueuingTimeHistory(int id, int nthDayToReview);
 
     Calendar getCurrentTime();
+
+    Collection<Shop> getRecommendShops(final double x, final double y, int max);
+
+    List<Route> getRecommendRoutes(double x, double y);
+
+    Collection<Point> getPointInAnAttraction(int id);
 }

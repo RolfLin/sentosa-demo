@@ -171,8 +171,9 @@ public class FlowGenerator {
             int waitingTime = minWaitingTime + (int)((value - lowValue) / (double) (peakValue - lowValue) * (maxWaitingTime - minWaitingTime));
             waitingTime += localRandom.nextInt(10) - 5;
             ret.add(Math.max(0, waitingTime));
+            if(step == 0)
+                break;
         }
-
         return ret;
     }
 

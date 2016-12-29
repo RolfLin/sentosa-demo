@@ -1,14 +1,13 @@
 package edu.illinois.adsc.sentosa.query.naive;
 
+import edu.illinois.adsc.sentosa.Utils.Utils;
 import edu.illinois.adsc.sentosa.config.Config;
-import edu.illinois.adsc.sentosa.query.Interface.Attraction;
-import edu.illinois.adsc.sentosa.query.Interface.IQuery;
+import edu.illinois.adsc.sentosa.query.Interface.*;
 
 import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.*;
-import java.util.logging.SimpleFormatter;
 
 /**
  * A naive implementation of the IQuery interface
@@ -16,6 +15,10 @@ import java.util.logging.SimpleFormatter;
 public class NaiveQueryImpl implements IQuery {
 
     Map<Integer, Attraction> attractions = new HashMap<>();
+
+    Map<Integer, Shop> shops = new HashMap<>();
+
+    Map<Integer, List<Point>> attractionIdToPoints = new HashMap<>();
 
     final private static NaiveQueryImpl instance = new NaiveQueryImpl();
 
@@ -28,8 +31,23 @@ public class NaiveQueryImpl implements IQuery {
     }
 
     private NaiveQueryImpl() {
+        loadData();
+        flowGenerator = new FlowGenerator(attractions);
+    }
+
+    private void addPointToAttraction(Point point) {
+        if(!attractionIdToPoints.containsKey(point.attractionId)) {
+            attractionIdToPoints.put(point.attractionId, new ArrayList<Point>());
+        }
+        attractionIdToPoints.get(point.attractionId).add(point);
+    }
+
+    /**
+     * Currently, the data is initialized by hard code.
+     */
+    private void loadData() {
         attractions.put(0, new Attraction(0, 1.254028, 103.823806, "Universal Studio", 9, 30, 18, 0,
-                "Universal Studio Singapore is a theme park located within Resorts World Sentosa on Sentosa Island, Singapore."));
+                "Universal Studio Singapore is a theme park located within Resorts World Sentosa on Sentosa Island, Singapore.", "image/universalStudio"));
         attractions.put(1, new Attraction(1, 1.258549, 103.819314, "Adventure Cove Waterpark", 10, 0, 20, 0));
         attractions.put(2, new Attraction(2, 1.253336, 103.818853, "Sentosa Merlion", 8, 0, 22, 0));
         DateFormat format = new SimpleDateFormat("yyyy-MM-dd,HH:mm");
@@ -39,7 +57,22 @@ public class NaiveQueryImpl implements IQuery {
             e.printStackTrace();
         }
 
-        flowGenerator = new FlowGenerator(attractions);
+        shops.put(0, new Shop(0, 1.257554, 103.822677, 9.5, "Seafood Republic", "image/seefood"));
+        shops.put(1, new Shop(1, 1.256118, 103.822013, 9.8, "Universal Studio Store", "image/UniversalStudioStore"));
+        shops.put(2, new Shop(2, 1.254835, 103.821406, 9.6, "Big Bird's Emporium", "image/bigbird"));
+        shops.put(3, new Shop(3, 1.256670, 103.820387, 9.9, "Candylicious", "image/candylicious"));
+
+        addPointToAttraction(new Point(0, 1.253823, 103.822153, "Battlestar Galactica"));
+        addPointToAttraction(new Point(0, 1.253195, 103.825276, "Swellview Fairground"));
+        addPointToAttraction(new Point(0, 1.255713, 103.823083, "Madagascar Ride"));
+
+        addPointToAttraction(new Point(1, 1.258609, 103.819423, "Adventure Cove Waterpark"));
+
+        addPointToAttraction(new Point(2, 1.253336, 103.818853, "Sentosa Merlion"));
+        addPointToAttraction(new Point(2, 1.251313, 103.817089, "Wings Of Time"));
+        addPointToAttraction(new Point(2, 1.255364, 103.812566, "Siloso Beach"));
+
+
     }
 
     @Override
@@ -51,7 +84,20 @@ public class NaiveQueryImpl implements IQuery {
     public Collection<Attraction> queryNearByAttractions(final double x, final double y, int max) {
         List<Attraction> ret = new ArrayList<>();
         ret.addAll(attractions.values());
-        Collections.sort(ret, new Comparator<Attraction>() {
+//        Collections.sort(ret, new Comparator<Attraction>() {
+//            @Override
+//            public int compare(Attraction o1, Attraction o2) {
+//                double d1 = Math.sqrt((x - o1.x) * (x - o1.x) + (y - o1.y) * (y - o1.y));
+//                double d2 = Math.sqrt((x - o2.x) * (x - o2.x) + (y - o2.y) * (y - o2.y));
+//                return Double.compare(d1, d2);
+//            }
+//        });
+        sortAttractionBasedOnDistance(ret, x, y);
+        return ret;
+    }
+
+    private void sortAttractionBasedOnDistance(List<Attraction> attractions, final double x, final double y) {
+        Collections.sort(attractions, new Comparator<Attraction>() {
             @Override
             public int compare(Attraction o1, Attraction o2) {
                 double d1 = Math.sqrt((x - o1.x) * (x - o1.x) + (y - o1.y) * (y - o1.y));
@@ -59,7 +105,6 @@ public class NaiveQueryImpl implements IQuery {
                 return Double.compare(d1, d2);
             }
         });
-        return ret;
     }
 
     @Override
@@ -98,6 +143,111 @@ public class NaiveQueryImpl implements IQuery {
         return date;
     }
 
+    @Override
+    public Collection<Shop> getRecommendShops(final double x, final double y, int max) {
+        List<Shop> allShops = new ArrayList<>();
+
+        // sort the shops based on the distance in increasing order.
+        allShops.addAll(shops.values());
+        Collections.sort(allShops, new Comparator<Shop>() {
+            @Override
+            public int compare(Shop o1, Shop o2) {
+                double d1 = Math.sqrt((x - o1.x) * (x - o1.x) + (y - o1.y) * (y - o1.y));
+                double d2 = Math.sqrt((x - o2.x) * (x - o2.x) + (y - o2.y) * (y - o2.y));
+                return Double.compare(d1, d2);
+            }
+        });
+
+        List<Shop> nearbyShops = allShops.subList(0, Math.min(max, allShops.size()));
+
+        Collections.sort(nearbyShops, new Comparator<Shop>() {
+            @Override
+            public int compare(Shop o1, Shop o2) {
+                return Double.compare(o2.rating, o1.rating);
+            }
+        });
+
+        return nearbyShops;
+    }
+
+    @Override
+    public List<Route> getRecommendRoutes(double x, double y) {
+        List<Route> routes = new ArrayList<>();
+        routes.add(getRouteWithMinimizedWalkingDistance(x, y));
+        routes.add(getRouteWithMinimizedTime(x, y));
+//        Collections.sort(routes, new Comparator<Route>() {
+//            @Override
+//            public int compare(Route o1, Route o2) {
+//                return Integer.compare(o1.estimateTimeInMins, o2.estimateTimeInMins);
+//            }
+//        });
+        return routes;
+    }
+
+    @Override
+    public Collection<Point> getPointInAnAttraction(int id) {
+        return attractionIdToPoints.get(id);
+    }
+
+    private Route getRouteWithMinimizedWalkingDistance(double x, double y) {
+        Route route = new Route();
+        List<Attraction> unvisited = new ArrayList<>();
+        unvisited.addAll(attractions.values());
+        int futureTimeInMin = 0;
+        while(!unvisited.isEmpty()) {
+            sortAttractionBasedOnDistance(unvisited, x, y);
+            Attraction toVisit = unvisited.get(0);
+            final int walkingDistance = getDistance(x, y, toVisit.x, toVisit.y);
+            final int walkingTime = walkingDistance / Utils.walkingMeterPerMin;
+            final int queuingTime = predicateQueueTime(toVisit.id, futureTimeInMin + walkingTime);
+            final int visitTime = Config.VisitTimeInSecs;
+            route.visitAttraction(toVisit, walkingTime, visitTime, queuingTime, walkingDistance);
+            unvisited.remove(0);
+            futureTimeInMin += walkingTime + queuingTime + visitTime;
+        }
+        return route;
+    }
+
+    private Route getRouteWithMinimizedTime(double x, double y) {
+        Route route = new Route();
+        List<Attraction> unvisited = new ArrayList<>();
+        unvisited.addAll(attractions.values());
+        int futureTimeInMin = 0;
+        while (!unvisited.isEmpty()) {
+            Attraction bestToVisit = null;
+            int bestTimeBudget = Integer.MAX_VALUE;
+            int bestWalkingTime = 0;
+            int bestQueueTime = 0;
+            int bestWalkingDistance = 0;
+            for (Attraction toVisit: unvisited) {
+                final int walkingDistance = getDistance(x, y, toVisit.x, toVisit.y);
+                final int walkingTime = walkingDistance / Utils.walkingMeterPerMin;
+                final int queueTime = predicateQueueTime(toVisit.id, futureTimeInMin + walkingTime);
+                final int visitTime = Config.VisitTimeInSecs;
+                final int timeBudget = walkingTime + queueTime + visitTime;
+                if (timeBudget <  bestTimeBudget) {
+                    bestToVisit = toVisit;
+                    bestTimeBudget = timeBudget;
+                    bestQueueTime = queueTime;
+                    bestWalkingTime = walkingTime;
+                    bestWalkingDistance = walkingDistance;
+                }
+            }
+            unvisited.remove(bestToVisit);
+            futureTimeInMin += bestTimeBudget;
+            route.visitAttraction(bestToVisit, bestWalkingTime, Config.VisitTimeInSecs, bestQueueTime, bestWalkingDistance);
+        }
+        return route;
+    }
+
+    private int predicateQueueTime(int id, int futureMin) {
+        final int queueTime = flowGenerator.predicateQueuingTime(id, date, 1, futureMin).get(0);
+        return queueTime;
+    }
+
+    private int getDistance(double x1, double y1, double x2, double y2) {
+        return (int)(Math.sqrt(Math.pow(x1 - x2, 2) + Math.pow(y1 - y2, 2)) * Utils.coordinatorToMeterFactor);
+    }
 
     static public void main(String[] args) {
         SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
@@ -108,5 +258,9 @@ public class NaiveQueryImpl implements IQuery {
         calendar.add(Calendar.DAY_OF_MONTH, - 100);
         System.out.println(dateFormat.format(calendar.getTime()));
         System.out.println(dateFormat.format(NaiveQueryImpl.instance().date.getTime()));
+
+        System.out.println(NaiveQueryImpl.instance.getRecommendShops(0, 0, 10));
+
+        System.out.println(NaiveQueryImpl.instance.getRecommendRoutes(1.258609, 103.819424));
     }
 }
