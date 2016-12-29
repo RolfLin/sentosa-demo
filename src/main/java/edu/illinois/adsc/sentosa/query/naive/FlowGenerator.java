@@ -2,10 +2,7 @@ package edu.illinois.adsc.sentosa.query.naive;
 
 import edu.illinois.adsc.sentosa.query.Interface.Attraction;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Map;
-import java.util.Random;
+import java.util.*;
 
 /**
  * Created by robert on 28/12/16.
@@ -18,11 +15,17 @@ public class FlowGenerator {
         this.attractions = attractions;
     }
 
-    public List<Integer> historyFlow(int id, int year, int month, int day) {
+    public List<Integer> historyFlow(int id, Calendar currentTime, int nthDayToReview) {
+        currentTime.add(Calendar.DATE, - nthDayToReview);
+        int year = currentTime.get(Calendar.YEAR);
+        int month = currentTime.get(Calendar.MONTH);
+        int day = currentTime.get(Calendar.DAY_OF_MONTH);
         Random random = new Random(id + year + month + day);
         Attraction attraction = attractions.get(id);
         int start = attraction.startTimeHour * 60 + attraction.startTimeMin;
         int end = attraction.endTimeHour * 60 + attraction.endTimeMin;
+
+
 
         final int peakValue = 1000 + random.nextInt(500);
         final int lowValue = random.nextInt(100);
@@ -31,7 +34,11 @@ public class FlowGenerator {
         final int peakTimeEnd = 15 * 60;
 
         List<Integer> ret = new ArrayList<>();
-        for(int i = start; i < end; i += 30) {
+
+        int logicalEnd = nthDayToReview != 0 ? end : currentTime.get(Calendar.HOUR_OF_DAY) * 60 +
+                currentTime.get(Calendar.MINUTE);
+
+        for(int i = start; i <= logicalEnd; i += 30) {
             Random localRandom = new Random(id + year + month + day + i);
             int value;
             if(i < peakTimeStart) {
@@ -49,7 +56,12 @@ public class FlowGenerator {
         return ret;
     }
 
-    public List<Integer> predicteFlow(int id, int year, int month, int day, int startHour, int startMin, int nSteps, int step) {
+    public List<Integer> predicteFlow(int id, Calendar currentTime, int nSteps, int step) {
+        int year = currentTime.get(Calendar.YEAR);
+        int month = currentTime.get(Calendar.MONTH);
+        int day = currentTime.get(Calendar.DAY_OF_MONTH);
+        int startHour = currentTime.get(Calendar.HOUR_OF_DAY);
+        int startMin = currentTime.get(Calendar.MINUTE);
         Random random = new Random(id + year + month + day);
         Attraction attraction = attractions.get(id);
         int start = attraction.startTimeHour * 60 + attraction.startTimeMin;
@@ -62,7 +74,7 @@ public class FlowGenerator {
         final int peakTimeEnd = 15 * 60;
 
         List<Integer> ret = new ArrayList<>();
-        for(int i = startHour * 60 + startMin; i < startHour * 60 + startMin + nSteps * step; i += step) {
+        for(int i = startHour * 60 + startMin + step; i <= startHour * 60 + startMin + nSteps * step; i += step) {
             Random localRandom = new Random(id + year + month + day + i);
             int value;
             if(i < peakTimeStart) {
@@ -81,7 +93,11 @@ public class FlowGenerator {
     }
 
 
-    public List<Integer> historyQueuingTime(int id, int year, int month, int day) {
+    public List<Integer> historyQueuingTime(int id, Calendar currentTime, int nthDayToReview) {
+        currentTime.add(Calendar.DATE, - nthDayToReview);
+        int year = currentTime.get(Calendar.YEAR);
+        int month = currentTime.get(Calendar.MONTH);
+        int day = currentTime.get(Calendar.DAY_OF_MONTH);
         Random random = new Random(id + year + month + day);
         Attraction attraction = attractions.get(id);
         int start = attraction.startTimeHour * 60 + attraction.startTimeMin;
@@ -97,7 +113,9 @@ public class FlowGenerator {
         final int minWaitingTime = 5;
 
         List<Integer> ret = new ArrayList<>();
-        for(int i = start; i < end; i += 30) {
+        int logicalEnd = nthDayToReview != 0 ? end : currentTime.get(Calendar.HOUR_OF_DAY) * 60 +
+                currentTime.get(Calendar.MINUTE);
+        for(int i = start; i <= logicalEnd; i += 30) {
             Random localRandom = new Random(id + year + month + day + i);
             int value;
             if(i < peakTimeStart) {
@@ -117,7 +135,12 @@ public class FlowGenerator {
         return ret;
     }
 
-    public List<Integer> predicateQueuingTime(int id, int year, int month, int day, int startHour, int startMin, int nSteps, int step) {
+    public List<Integer> predicateQueuingTime(int id, Calendar currentTime, int nSteps, int step) {
+        int year = currentTime.get(Calendar.YEAR);
+        int month = currentTime.get(Calendar.MONTH);
+        int day = currentTime.get(Calendar.DAY_OF_MONTH);
+        int startHour = currentTime.get(Calendar.HOUR_OF_DAY);
+        int startMin = currentTime.get(Calendar.MINUTE);
         Random random = new Random(id + year + month + day);
         Attraction attraction = attractions.get(id);
         int start = attraction.startTimeHour * 60 + attraction.startTimeMin;
@@ -133,7 +156,7 @@ public class FlowGenerator {
         final int minWaitingTime = 5;
 
         List<Integer> ret = new ArrayList<>();
-        for(int i = startHour * 60 + startMin; i <  startHour * 60 + startMin + nSteps * step; i += step) {
+        for(int i = startHour * 60 + startMin + step; i <=  startHour * 60 + startMin + nSteps * step; i += step) {
             Random localRandom = new Random(id + year + month + day + i);
             int value;
             if(i < peakTimeStart) {
@@ -155,15 +178,17 @@ public class FlowGenerator {
 
     static public void main(String[] args) {
         FlowGenerator flowGenerator = new FlowGenerator(NaiveQueryImpl.instance().attractions);
-        System.out.println(flowGenerator.historyFlow(0, 2016, 12, 28));
-        System.out.println(flowGenerator.historyFlow(0, 2016, 12, 29));
-        System.out.println(flowGenerator.predicteFlow(0, 2016, 12, 29, 15, 0 , 10, 10));
-        System.out.println(flowGenerator.predicteFlow(0, 2016, 12, 29, 15, 10 , 10, 10));
+        System.out.println(flowGenerator.historyFlow(0, NaiveQueryImpl.instance().date, 1));
+        System.out.println(flowGenerator.historyFlow(0, NaiveQueryImpl.instance().date, 2));
+        System.out.println(flowGenerator.predicteFlow(0, NaiveQueryImpl.instance().date, 10, 10));
+        System.out.println(flowGenerator.predicteFlow(0, NaiveQueryImpl.instance().date, 10, 10));
 
-        System.out.println(flowGenerator.historyQueuingTime(0, 2016, 12, 29));
-        System.out.println(flowGenerator.historyQueuingTime(1, 2016, 12, 29));
+        System.out.println(flowGenerator.historyQueuingTime(0, NaiveQueryImpl.instance().date, 0));
+        System.out.println(flowGenerator.historyQueuingTime(0, NaiveQueryImpl.instance().date, 1));
+        System.out.println(flowGenerator.historyQueuingTime(0, NaiveQueryImpl.instance().date, 2));
 
-        System.out.println(flowGenerator.predicateQueuingTime(0, 2016, 12, 29, 15, 10 , 10, 10));
-        System.out.println(flowGenerator.predicateQueuingTime(0, 2016, 12, 29, 15, 20 , 10, 10));
+        System.out.println(flowGenerator.predicateQueuingTime(0, NaiveQueryImpl.instance().date, 10, 10));
+        NaiveQueryImpl.instance().date.add(Calendar.MINUTE, 10);
+        System.out.println(flowGenerator.predicateQueuingTime(0, NaiveQueryImpl.instance().date, 10, 10));
     }
 }
