@@ -16,7 +16,7 @@ public class FlowGenerator {
     }
 
     public List<Integer> historyFlow(int id, Calendar currentTime, int nthDayToReview) {
-        currentTime.add(Calendar.DATE, - nthDayToReview);
+        currentTime.add(Calendar.DAY_OF_MONTH, - nthDayToReview);
         int year = currentTime.get(Calendar.YEAR);
         int month = currentTime.get(Calendar.MONTH);
         int day = currentTime.get(Calendar.DAY_OF_MONTH);
@@ -94,7 +94,7 @@ public class FlowGenerator {
 
 
     public List<Integer> historyQueuingTime(int id, Calendar currentTime, int nthDayToReview) {
-        currentTime.add(Calendar.DATE, - nthDayToReview);
+        currentTime.add(Calendar.DAY_OF_MONTH, - nthDayToReview);
         int year = currentTime.get(Calendar.YEAR);
         int month = currentTime.get(Calendar.MONTH);
         int day = currentTime.get(Calendar.DAY_OF_MONTH);
@@ -177,6 +177,7 @@ public class FlowGenerator {
     }
 
     static public void main(String[] args) {
+
         FlowGenerator flowGenerator = new FlowGenerator(NaiveQueryImpl.instance().attractions);
         System.out.println(flowGenerator.historyFlow(0, NaiveQueryImpl.instance().date, 1));
         System.out.println(flowGenerator.historyFlow(0, NaiveQueryImpl.instance().date, 2));

@@ -70,31 +70,43 @@ public class NaiveQueryImpl implements IQuery {
     @Override
     public List<Integer> predicateFlow(int id) {
         return flowGenerator.predicteFlow(id, date, Config
-                        .NumberOfPredicates + 1, Config.PredicateStepInMins);
+                        .NumberOfPredicates, Config.PredicateStepInMins);
     }
 
     @Override
     public List<Integer> predicateQueuingTime(int id) {
         return flowGenerator.predicateQueuingTime(id, date, Config
-                        .NumberOfPredicates + 1, Config.PredicateStepInMins);
+                        .NumberOfPredicates, Config.PredicateStepInMins);
     }
 
     @Override
     public List<Integer> retrieveFlowHistory(int id, int nthDayToReview) {
         Calendar historicalDay = Calendar.getInstance();
         historicalDay.setTime(date.getTime());
-        return flowGenerator.historyFlow(id, date, nthDayToReview);
+        return flowGenerator.historyFlow(id, historicalDay, nthDayToReview);
     }
 
     @Override
     public List<Integer> retrieveQueuingTimeHistory(int id, int nthDayToReview) {
         Calendar historicalDay = Calendar.getInstance();
         historicalDay.setTime(date.getTime());
-        return flowGenerator.historyQueuingTime(id, date, nthDayToReview);
+        return flowGenerator.historyQueuingTime(id, historicalDay, nthDayToReview);
     }
 
     @Override
     public Calendar getCurrentTime() {
         return date;
+    }
+
+
+    static public void main(String[] args) {
+        SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
+        System.out.println(dateFormat.format(NaiveQueryImpl.instance().date.getTime()));
+
+        Calendar calendar = Calendar.getInstance();
+        calendar.setTime(NaiveQueryImpl.instance().date.getTime());
+        calendar.add(Calendar.DAY_OF_MONTH, - 100);
+        System.out.println(dateFormat.format(calendar.getTime()));
+        System.out.println(dateFormat.format(NaiveQueryImpl.instance().date.getTime()));
     }
 }
