@@ -31,5 +31,15 @@ public interface IQuery {
 
     List<Route> getRecommendRoutes(double x, double y);
 
-    Collection<Point> getPointInAnAttraction(int id);
+    List<Point> getPointInAnAttraction(int id);
+
+    List<Integer> predicatePointCount(int id);
+
+    int getAttractionInCount(int id);
+
+    int getAttractionOutCount(int id);
+
+    int getAttractionEnterCount(int id);
+
+    int getAttractionEnterRate(int id);
 }

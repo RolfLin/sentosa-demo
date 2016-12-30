@@ -1,6 +1,7 @@
 package edu.illinois.adsc.sentosa.query.naive;
 
 import edu.illinois.adsc.sentosa.query.Interface.Attraction;
+import edu.illinois.adsc.sentosa.query.Interface.Point;
 
 import java.util.*;
 
@@ -11,8 +12,11 @@ public class FlowGenerator {
 
     public Map<Integer, Attraction> attractions;
 
-    public FlowGenerator(Map<Integer, Attraction> attractions) {
+    public Map<Integer, List<Point>> attractionIdToPoints;
+
+    public FlowGenerator(Map<Integer, Attraction> attractions, Map<Integer, List<Point>> attractionIdToPoints) {
         this.attractions = attractions;
+        this.attractionIdToPoints = attractionIdToPoints;
     }
 
     public List<Integer> historyFlow(int id, Calendar currentTime, int nthDayToReview) {
@@ -87,6 +91,9 @@ public class FlowGenerator {
                 value = peakValue + localRandom.nextInt(100) - 50;
             }
             ret.add(Math.max(0, value));
+            if (step == 0) {
+                break;
+            }
         }
 
         return ret;
@@ -177,9 +184,31 @@ public class FlowGenerator {
         return ret;
     }
 
+    public List<Integer> predicatePointCounts(int attractionid, Calendar calendar) {
+        int totalCount = predicteFlow(attractionid, calendar, 1, 0).get(0);
+        List<Point> points = attractionIdToPoints.get(attractionid);
+        int sumCount = 0;
+        final int numberOfCounts = points.size();
+        Random random = new Random(attractionid + calendar.get(Calendar.DAY_OF_YEAR) + calendar.get(Calendar.MINUTE) +
+                calendar.get(Calendar.HOUR_OF_DAY));
+        List<Integer> counts = new ArrayList<>();
+        final int fluctuation = totalCount / numberOfCounts / 4;
+        for(int i = 0; i < points.size(); i++) {
+            int count;
+            if (i != points.size() - 1) {
+                count = totalCount / numberOfCounts + random.nextInt(fluctuation) - fluctuation / 2;
+                sumCount += Math.max(0, count);
+            } else {
+                count = totalCount - sumCount;
+            }
+            counts.add(Math.max(0, count));
+        }
+        return counts;
+    }
+
     static public void main(String[] args) {
 
-        FlowGenerator flowGenerator = new FlowGenerator(NaiveQueryImpl.instance().attractions);
+        FlowGenerator flowGenerator = new FlowGenerator(NaiveQueryImpl.instance().attractions, NaiveQueryImpl.instance().attractionIdToPoints);
         System.out.println(flowGenerator.historyFlow(0, NaiveQueryImpl.instance().date, 1));
         System.out.println(flowGenerator.historyFlow(0, NaiveQueryImpl.instance().date, 2));
         System.out.println(flowGenerator.predicteFlow(0, NaiveQueryImpl.instance().date, 10, 10));
@@ -192,5 +221,11 @@ public class FlowGenerator {
         System.out.println(flowGenerator.predicateQueuingTime(0, NaiveQueryImpl.instance().date, 10, 10));
         NaiveQueryImpl.instance().date.add(Calendar.MINUTE, 10);
         System.out.println(flowGenerator.predicateQueuingTime(0, NaiveQueryImpl.instance().date, 10, 10));
+
+        System.out.println("Counts:");
+
+        System.out.println(flowGenerator.predicatePointCounts(0, NaiveQueryImpl.instance().date));
+        System.out.println(flowGenerator.predicatePointCounts(1, NaiveQueryImpl.instance().date));
+        System.out.println(flowGenerator.predicatePointCounts(2, NaiveQueryImpl.instance().date));
     }
 }

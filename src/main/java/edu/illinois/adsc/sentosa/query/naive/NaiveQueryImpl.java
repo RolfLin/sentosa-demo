@@ -32,7 +32,7 @@ public class NaiveQueryImpl implements IQuery {
 
     private NaiveQueryImpl() {
         loadData();
-        flowGenerator = new FlowGenerator(attractions);
+        flowGenerator = new FlowGenerator(attractions, attractionIdToPoints);
     }
 
     private void addPointToAttraction(Point point) {
@@ -185,8 +185,44 @@ public class NaiveQueryImpl implements IQuery {
     }
 
     @Override
-    public Collection<Point> getPointInAnAttraction(int id) {
+    public List<Point> getPointInAnAttraction(int id) {
         return attractionIdToPoints.get(id);
+    }
+
+    @Override
+    public List<Integer> predicatePointCount(int id) {
+        return flowGenerator.predicatePointCounts(id, date);
+    }
+
+    @Override
+    public int getAttractionInCount(int id) {
+        return flowGenerator.predicteFlow(id, date, 1, 0).get(0);
+    }
+
+    @Override
+    public int getAttractionOutCount(int id) {
+        Random random = new Random(id + date.get(Calendar.DAY_OF_YEAR) + date.get(Calendar.HOUR_OF_DAY) + date.get(Calendar.MINUTE));
+        int flow = flowGenerator.predicteFlow(id, date, 1, 0).get(0);
+        flow = flow / 5 + random.nextInt(flow / 10);
+        return flow;
+    }
+
+    @Override
+    public int getAttractionEnterCount(int id) {
+        Random random = new Random(id + date.get(Calendar.DAY_OF_YEAR) + date.get(Calendar.HOUR_OF_DAY) + date.get(Calendar.MINUTE));
+        int flow = flowGenerator.predicteFlow(id, date, 1, 0).get(0);
+        random.nextInt();
+        flow = flow / 5 + random.nextInt(flow / 10);
+        return flow;
+    }
+
+    @Override
+    public int getAttractionEnterRate(int id) {
+        Random random = new Random(id + date.get(Calendar.DAY_OF_YEAR) + date.get(Calendar.HOUR_OF_DAY) + date.get(Calendar.MINUTE));
+        int flow = flowGenerator.predicteFlow(id, date, 1, 0).get(0);
+        random.nextInt();
+        flow = flow / 5 + random.nextInt(flow / 10);
+        return flow;
     }
 
     private Route getRouteWithMinimizedWalkingDistance(double x, double y) {
@@ -262,5 +298,26 @@ public class NaiveQueryImpl implements IQuery {
         System.out.println(NaiveQueryImpl.instance.getRecommendShops(0, 0, 10));
 
         System.out.println(NaiveQueryImpl.instance.getRecommendRoutes(1.258609, 103.819424));
+
+        System.out.println(String.format("%d %d %d %d",
+                NaiveQueryImpl.instance.getAttractionEnterCount(0),
+                NaiveQueryImpl.instance.getAttractionInCount(0),
+                NaiveQueryImpl.instance.getAttractionOutCount(0),
+                NaiveQueryImpl.instance.getAttractionEnterRate(0))
+                );
+
+        System.out.println(String.format("%d %d %d %d",
+                NaiveQueryImpl.instance.getAttractionEnterCount(1),
+                NaiveQueryImpl.instance.getAttractionInCount(1),
+                NaiveQueryImpl.instance.getAttractionOutCount(1),
+                NaiveQueryImpl.instance.getAttractionEnterRate(1))
+        );
+
+        System.out.println(String.format("%d %d %d %d",
+                NaiveQueryImpl.instance.getAttractionEnterCount(2),
+                NaiveQueryImpl.instance.getAttractionInCount(2),
+                NaiveQueryImpl.instance.getAttractionOutCount(2),
+                NaiveQueryImpl.instance.getAttractionEnterRate(2))
+        );
     }
 }
