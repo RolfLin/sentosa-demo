@@ -26,6 +26,8 @@ public class NaiveQueryImpl implements IQuery {
 
     Calendar date = Calendar.getInstance();
 
+    String warningMessage = "N/A";
+
     public static NaiveQueryImpl instance() {
             return instance;
     }
@@ -253,6 +255,16 @@ public class NaiveQueryImpl implements IQuery {
             }
         });
         return ret;
+    }
+
+    @Override
+    public void setWarningMessage(String message) {
+        warningMessage = message;
+    }
+
+    @Override
+    public String getWarningMessage() {
+        return warningMessage;
     }
 
     private Route getRouteWithMinimizedWalkingDistance(double x, double y) {

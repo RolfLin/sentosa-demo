@@ -45,6 +45,10 @@ public interface IQuery {
 
     List<AttractionAndScore> getHotAttractionsRanking();
 
+    void setWarningMessage(String message);
+
+    String getWarningMessage();
+
     public static class AttractionAndScore {
         public Attraction attraction;
         public int score;
