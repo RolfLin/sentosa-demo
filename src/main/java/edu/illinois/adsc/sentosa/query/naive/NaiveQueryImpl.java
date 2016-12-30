@@ -51,7 +51,7 @@ public class NaiveQueryImpl implements IQuery {
      */
     private void loadData() {
         attractions.put(0, new Attraction(0, 1.254028, 103.823806, "Universal Studio", 9, 30, 18, 0, 4.9,
-                "Universal Studio Singapore is a theme park located within Resorts World Sentosa on Sentosa Island, Singapore.", "image/universalStudio"));
+                "Universal Studio Singapore is a theme park located within Resorts World Sentosa on Sentosa Island, Singapore.", "src/main/webapp/WEB-INF/image/universalStudio"));
         attractions.put(1, new Attraction(1, 1.258549, 103.819314, "Adventure Cove Waterpark", 10, 0, 20, 0, 4.8));
         attractions.put(2, new Attraction(2, 1.253336, 103.818853, "Sentosa Merlion", 8, 0, 22, 0, 4.7));
         DateFormat format = new SimpleDateFormat("yyyy-MM-dd,HH:mm");
@@ -61,10 +61,11 @@ public class NaiveQueryImpl implements IQuery {
             e.printStackTrace();
         }
 
-        shops.put(0, new Shop(0, 1.257554, 103.822677, 9.5, "Seafood Republic", "image/seefood"));
-        shops.put(1, new Shop(1, 1.256118, 103.822013, 9.8, "Universal Studio Store", "image/UniversalStudioStore"));
-        shops.put(2, new Shop(2, 1.254835, 103.821406, 9.6, "Big Bird's Emporium", "image/bigbird"));
-        shops.put(3, new Shop(3, 1.256670, 103.820387, 9.9, "Candylicious", "image/candylicious"));
+        shops.put(0, new Shop(0, 1.257554, 103.822677, 9.5, "Seafood Republic", "src/main/webapp/WEB-INF/image/seefood"));
+        shops.put(1, new Shop(1, 1.256118, 103.822013, 9.8, "Universal Studio Store", "src/main/webapp/WEB-INF/image" +
+                "/UniversalStudioStore"));
+        shops.put(2, new Shop(2, 1.254835, 103.821406, 9.6, "Big Bird's Emporium", "src/main/webapp/WEB-INF/image/bigbird"));
+        shops.put(3, new Shop(3, 1.256670, 103.820387, 9.9, "Candylicious", "src/main/webapp/WEB-INF/image/candylicious"));
 
         addPointToAttraction(new Point(0, 1.253823, 103.822153, "Battlestar Galactica"));
         addPointToAttraction(new Point(0, 1.253195, 103.825276, "Swellview Fairground"));

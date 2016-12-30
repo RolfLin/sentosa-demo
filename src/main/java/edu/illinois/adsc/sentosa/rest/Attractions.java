@@ -7,7 +7,6 @@ import org.json.JSONObject;
 import javax.ws.rs.*;
 import javax.ws.rs.core.MediaType;
 import java.util.Collection;
-import java.util.List;
 
 /**
  * Created by robert on 28/12/16.
@@ -28,7 +27,7 @@ public class Attractions {
             jsonObject.put("id", attraction.id);
             jsonObject.put("name", attraction.name);
             jsonObject.put("rating", attraction.rating);
-            jsonObject.put("image", attraction.image);
+            jsonObject.put("src/main/webapp/WEB-INF/image", attraction.image);
             jsonObject.put("Opentime", String.format("%02d:%02d-%02d:%02d", attraction.startTimeHour, attraction.startTimeMin,
                     attraction.endTimeHour, attraction.endTimeMin));
             JSONArray.put(jsonObject);
@@ -50,7 +49,7 @@ public class Attractions {
             jsonObject.put("id", attraction.id);
             jsonObject.put("name", attraction.name);
             jsonObject.put("rating", attraction.rating);
-            jsonObject.put("image", attraction.image);
+            jsonObject.put("src/main/webapp/WEB-INF/image", attraction.image);
             jsonObject.put("Opentime", String.format("%02d:%02d-%02d:%02d", attraction.startTimeHour, attraction.startTimeMin,
                     attraction.endTimeHour, attraction.endTimeMin));
             JSONArray.put(jsonObject);
