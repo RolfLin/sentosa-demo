@@ -28,6 +28,7 @@ public class Attractions {
             jsonObject.put("id", attraction.id);
             jsonObject.put("name", attraction.name);
             jsonObject.put("rating", attraction.rating);
+            jsonObject.put("image", attraction.image);
             jsonObject.put("Opentime", String.format("%02d:%02d-%02d:%02d", attraction.startTimeHour, attraction.startTimeMin,
                     attraction.endTimeHour, attraction.endTimeMin));
             JSONArray.put(jsonObject);
@@ -49,6 +50,7 @@ public class Attractions {
             jsonObject.put("id", attraction.id);
             jsonObject.put("name", attraction.name);
             jsonObject.put("rating", attraction.rating);
+            jsonObject.put("image", attraction.image);
             jsonObject.put("Opentime", String.format("%02d:%02d-%02d:%02d", attraction.startTimeHour, attraction.startTimeMin,
                     attraction.endTimeHour, attraction.endTimeMin));
             JSONArray.put(jsonObject);
