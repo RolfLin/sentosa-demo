@@ -26,7 +26,9 @@ public class NaiveQueryImpl implements IQuery {
 
     Calendar date = Calendar.getInstance();
 
-    String warningMessage = "N/A";
+    private String warningMessage = "N/A";
+
+    private String adminMessage = "N/A";
 
     public static NaiveQueryImpl instance() {
             return instance;
@@ -265,6 +267,16 @@ public class NaiveQueryImpl implements IQuery {
     @Override
     public String getWarningMessage() {
         return warningMessage;
+    }
+
+    @Override
+    public void setAdminMessage(String message) {
+        adminMessage = message;
+    }
+
+    @Override
+    public String getAdminMessage() {
+        return adminMessage;
     }
 
     private Route getRouteWithMinimizedWalkingDistance(double x, double y) {

@@ -49,6 +49,10 @@ public interface IQuery {
 
     String getWarningMessage();
 
+    void setAdminMessage(String message);
+
+    String getAdminMessage();
+
     public static class AttractionAndScore {
         public Attraction attraction;
         public int score;
