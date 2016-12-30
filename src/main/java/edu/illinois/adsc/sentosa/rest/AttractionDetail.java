@@ -25,6 +25,7 @@ public class AttractionDetail {
             jsonObject.put("error", ErrorCode.ATTRACTION_NOT_FOUND);
         } else {
             jsonObject.put("introduce", attraction.introduce);
+            jsonObject.put("rating", attraction.rating);
             jsonObject.put("lng", attraction.x);
             jsonObject.put("lat time", attraction.y);
         }

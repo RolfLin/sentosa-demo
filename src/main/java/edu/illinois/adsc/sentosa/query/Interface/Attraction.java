@@ -12,12 +12,13 @@ public class Attraction {
     public int startTimeMin;
     public int endTimeHour;
     public int endTimeMin;
+    public double rating;
     public String introduce;
     public String image;
-    public Attraction(int id, double x, double y, String name, int startTimeHour, int startTimeMin, int endTimeHour, int endTimeMin) {
-        this(id, x, y, name, startTimeHour, startTimeMin, endTimeHour, endTimeMin, "N/A", "N/A");
+    public Attraction(int id, double x, double y, String name, int startTimeHour, int startTimeMin, int endTimeHour, int endTimeMin, double rating) {
+        this(id, x, y, name, startTimeHour, startTimeMin, endTimeHour, endTimeMin, rating, "N/A", "N/A");
     }
-    public Attraction(int id, double x, double y, String name, int startTimeHour, int startTimeMin, int endTimeHour, int endTimeMin, String description, String image) {
+    public Attraction(int id, double x, double y, String name, int startTimeHour, int startTimeMin, int endTimeHour, int endTimeMin, double rating, String description, String image) {
         this.id = id;
         this.x = x;
         this.y = y;
@@ -26,6 +27,7 @@ public class Attraction {
         this.startTimeMin = startTimeMin;
         this.endTimeHour = endTimeHour;
         this.endTimeMin = endTimeMin;
+        this.rating = rating;
         this.introduce = description;
         this.image = image;
     }

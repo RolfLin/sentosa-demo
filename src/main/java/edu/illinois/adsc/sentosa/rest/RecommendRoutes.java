@@ -32,6 +32,7 @@ public class RecommendRoutes {
                 JSONObject jsonObjectForAttraction = new JSONObject();
                 jsonObjectForAttraction.put("name", attraction.name);
                 jsonObjectForAttraction.put("image", attraction.image);
+                jsonObjectForAttraction.put("rating", attraction.rating);
                 jsonObjectForAttraction.put("lng", attraction.x);
                 jsonObjectForAttraction.put("lat", attraction.y);
 

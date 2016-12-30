@@ -46,10 +46,10 @@ public class NaiveQueryImpl implements IQuery {
      * Currently, the data is initialized by hard code.
      */
     private void loadData() {
-        attractions.put(0, new Attraction(0, 1.254028, 103.823806, "Universal Studio", 9, 30, 18, 0,
+        attractions.put(0, new Attraction(0, 1.254028, 103.823806, "Universal Studio", 9, 30, 18, 0, 4.9,
                 "Universal Studio Singapore is a theme park located within Resorts World Sentosa on Sentosa Island, Singapore.", "image/universalStudio"));
-        attractions.put(1, new Attraction(1, 1.258549, 103.819314, "Adventure Cove Waterpark", 10, 0, 20, 0));
-        attractions.put(2, new Attraction(2, 1.253336, 103.818853, "Sentosa Merlion", 8, 0, 22, 0));
+        attractions.put(1, new Attraction(1, 1.258549, 103.819314, "Adventure Cove Waterpark", 10, 0, 20, 0, 4.8));
+        attractions.put(2, new Attraction(2, 1.253336, 103.818853, "Sentosa Merlion", 8, 0, 22, 0, 4.7));
         DateFormat format = new SimpleDateFormat("yyyy-MM-dd,HH:mm");
         try {
             date.setTime(format.parse("2016-12-30,14:00"));
