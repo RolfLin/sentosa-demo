@@ -42,4 +42,15 @@ public interface IQuery {
     int getAttractionEnterCount(int id);
 
     int getAttractionEnterRate(int id);
+
+    List<AttractionAndScore> getHotAttractionsRanking();
+
+    public static class AttractionAndScore {
+        public Attraction attraction;
+        public int score;
+        public AttractionAndScore(Attraction attraction, int score) {
+            this.score = score;
+            this.attraction = attraction;
+        }
+    }
 }

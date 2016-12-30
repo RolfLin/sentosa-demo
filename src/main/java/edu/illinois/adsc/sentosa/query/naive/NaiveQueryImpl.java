@@ -225,6 +225,36 @@ public class NaiveQueryImpl implements IQuery {
         return flow;
     }
 
+    @Override
+    public List<AttractionAndScore> getHotAttractionsRanking() {
+        List<Attraction> attractions = new ArrayList<>();
+        attractions.addAll(queryAllAttractions());
+        List<AttractionAndScore> ret = new ArrayList<>();
+        int max = 0;
+        for (Attraction attraction: attractions) {
+            final int flow = flowGenerator.predicteFlow(attraction.id, date, 1, 0).get(0);
+            ret.add(new AttractionAndScore(attraction, flow));
+            max = Math.max(max, flow);
+        }
+
+        double normalizationFactor = 100.0 / max;
+
+        //normalization
+
+        for (AttractionAndScore attractionAndScore: ret) {
+            attractionAndScore.score *= normalizationFactor;
+        }
+
+
+        Collections.sort(ret, new Comparator<AttractionAndScore>() {
+            @Override
+            public int compare(AttractionAndScore o1, AttractionAndScore o2) {
+                return Integer.compare(o2.score, o1.score);
+            }
+        });
+        return ret;
+    }
+
     private Route getRouteWithMinimizedWalkingDistance(double x, double y) {
         Route route = new Route();
         List<Attraction> unvisited = new ArrayList<>();
