@@ -31,7 +31,7 @@ public class RecommendRoutes {
             for(Attraction attraction: route.attractions) {
                 JSONObject jsonObjectForAttraction = new JSONObject();
                 jsonObjectForAttraction.put("name", attraction.name);
-                jsonObjectForAttraction.put("src/main/webapp/WEB-INF/image", attraction.image);
+                jsonObjectForAttraction.put("image", attraction.image);
                 jsonObjectForAttraction.put("rating", attraction.rating);
                 jsonObjectForAttraction.put("lng", attraction.x);
                 jsonObjectForAttraction.put("lat", attraction.y);
