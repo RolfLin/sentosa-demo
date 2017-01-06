@@ -20,8 +20,8 @@ public class Flow {
             @DefaultValue("0") @QueryParam("id") int id) {
         JSONObject jsonObject = new JSONObject();
         jsonObject.put("current", NaiveQueryImpl.instance().predicateFlow(id).get(0));
-        jsonObject.put("Maximum", 2000);
-        jsonObject.put("queuing time", NaiveQueryImpl.instance().predicateQueuingTime(id).get(0));
+        jsonObject.put("maximum", 2000);
+        jsonObject.put("queuing_time", NaiveQueryImpl.instance().predicateQueuingTime(id).get(0));
 
         return jsonObject.toString();
     }
