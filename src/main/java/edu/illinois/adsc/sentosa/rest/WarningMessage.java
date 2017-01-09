@@ -12,6 +12,7 @@ import javax.ws.rs.core.MediaType;
 @Path("warning_message")
 public class WarningMessage {
     @POST
+    @Consumes(MediaType.TEXT_PLAIN)
     @Produces(MediaType.TEXT_PLAIN)
     public String setWainingMessage(
             @FormParam("message") String message) {
