@@ -15,7 +15,7 @@ public class MyProfile {
     @Produces(MediaType.TEXT_PLAIN)
     public String getProfile() {
         JSONObject jsonObject = new JSONObject();
-        jsonObject.put("Image", "/imige/my_profile.png");
+        jsonObject.put("Image", "sentosa-demo-image/my_profile.png");
         jsonObject.put("Nickname", "Jack");
         jsonObject.put("Sex", "male");
         jsonObject.put("Phone", "+65-110119114");
