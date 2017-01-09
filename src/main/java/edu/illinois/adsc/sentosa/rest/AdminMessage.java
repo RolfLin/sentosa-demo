@@ -13,6 +13,7 @@ import javax.ws.rs.core.MediaType;
 public class AdminMessage {
     @POST
     @Produces(MediaType.TEXT_PLAIN)
+    @Consumes(MediaType.TEXT_PLAIN)
     public String setWainingMessage(
             @FormParam("message") String message) {
         NaiveQueryImpl.instance().setAdminMessage(message);
