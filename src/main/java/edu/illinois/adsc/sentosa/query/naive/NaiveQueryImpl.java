@@ -26,9 +26,10 @@ public class NaiveQueryImpl implements IQuery {
 
     Calendar date = Calendar.getInstance();
 
-    private String warningMessage = "N/A";
+    private String warningMessage = "Please take care of your belongings. If you see any suspicious person or " +
+            "article, please call 999.";
 
-    private String adminMessage = "N/A";
+    private String adminMessage = "There will be an intensely increased flow between 14:00 and 15:00.";
 
     public static NaiveQueryImpl instance() {
             return instance;
