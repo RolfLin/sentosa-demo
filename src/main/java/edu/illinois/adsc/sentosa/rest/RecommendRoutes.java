@@ -23,7 +23,7 @@ public class RecommendRoutes {
         List<Route> routes = NaiveQueryImpl.instance().getRecommendRoutes(x, y);
         for (Route route: routes) {
             JSONObject jsonObjectForRoute = new JSONObject();
-            jsonObjectForRoute.put("walking distance", route.walkingDistanceInMeters);
+            jsonObjectForRoute.put("walking_distance", route.walkingDistanceInMeters);
             jsonObjectForRoute.put("time", route.estimateTimeInMins);
 
 

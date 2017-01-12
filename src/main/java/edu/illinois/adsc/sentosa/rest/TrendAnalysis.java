@@ -24,7 +24,7 @@ public class TrendAnalysis {
         JSONObject jsonObjectForHistory = new JSONObject();
         jsonObjectForHistory.put("flow", NaiveQueryImpl.instance().retrieveFlowHistory(id, 0));
 
-        jsonObjectForHistory.put("queuing time", NaiveQueryImpl.instance().retrieveQueuingTimeHistory(id, 0));
+        jsonObjectForHistory.put("queuing_time", NaiveQueryImpl.instance().retrieveQueuingTimeHistory(id, 0));
 
         jsonObject.put("history", jsonObjectForHistory);
 
@@ -32,7 +32,7 @@ public class TrendAnalysis {
         JSONObject jsonObjectForPredication = new JSONObject();
         jsonObjectForPredication.put("flow", NaiveQueryImpl.instance().predicateFlow(id));
 
-        jsonObjectForPredication.put("queuing time", NaiveQueryImpl.instance().predicateQueuingTime(id));
+        jsonObjectForPredication.put("queuing_time", NaiveQueryImpl.instance().predicateQueuingTime(id));
 
         jsonObject.put("Predication", jsonObjectForPredication);
 

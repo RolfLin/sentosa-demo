@@ -39,7 +39,7 @@ public class HistoryTrend {
             for(Integer time: historicalQueueingTimes) {
                 jsonArrayForQueuingTime.put(time);
             }
-            jsonObjectForADay.put("queuing time", jsonArrayForQueuingTime);
+            jsonObjectForADay.put("queuing_time", jsonArrayForQueuingTime);
 
             Calendar time = Calendar.getInstance();
             time.setTime(NaiveQueryImpl.instance().getCurrentTime().getTime());
