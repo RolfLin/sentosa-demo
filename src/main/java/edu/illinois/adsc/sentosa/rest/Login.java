@@ -19,4 +19,13 @@ public class Login {
         System.out.println(String.format("Name: %s, Password: %s", name, password));
         return "Success!";
     }
+
+    @GET
+    @Produces(MediaType.TEXT_PLAIN)
+    public String getWarningMessage(@QueryParam("name") String message,
+                                    @QueryParam("password") String password) {
+        JSONObject object = new JSONObject();
+        object.put("response", "success");
+        return object.toString();
+    }
 }
