@@ -22,9 +22,16 @@ public class AdminMessage {
 
     @GET
     @Produces(MediaType.TEXT_PLAIN)
-    public String getWarningMessage() {
-        JSONObject jsonObject = new JSONObject();
-        jsonObject.put("message", NaiveQueryImpl.instance().getAdminMessage());
-        return jsonObject.toString();
+    public String getWarningMessage(@DefaultValue("null") @QueryParam("message") String message) {
+        if (message.equals("null")) {
+            JSONObject jsonObject = new JSONObject();
+            jsonObject.put("message", NaiveQueryImpl.instance().getAdminMessage());
+            return jsonObject.toString();
+        } else {
+            NaiveQueryImpl.instance().setAdminMessage(message);
+            JSONObject jsonObject = new JSONObject();
+            jsonObject.put("response", "updated");
+            return jsonObject.toString();
+        }
     }
 }

@@ -22,9 +22,16 @@ public class WarningMessage {
 
     @GET
     @Produces(MediaType.TEXT_PLAIN)
-    public String getWarningMessage() {
-        JSONObject jsonObject = new JSONObject();
-        jsonObject.put("message", NaiveQueryImpl.instance().getWarningMessage());
-        return jsonObject.toString();
+    public String getWarningMessage(@DefaultValue("null") @QueryParam("message") String message) {
+        if (message.equals("null")) {
+            JSONObject jsonObject = new JSONObject();
+            jsonObject.put("message", NaiveQueryImpl.instance().getWarningMessage());
+            return jsonObject.toString();
+        } else {
+            NaiveQueryImpl.instance().setWarningMessage(message);
+            JSONObject jsonObject = new JSONObject();
+            jsonObject.put("response", "updated");
+            return jsonObject.toString();
+        }
     }
 }
