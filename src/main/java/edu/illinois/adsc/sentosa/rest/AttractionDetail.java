@@ -26,8 +26,8 @@ public class AttractionDetail {
         } else {
             jsonObject.put("introduce", attraction.introduce);
             jsonObject.put("rating", attraction.rating);
-            jsonObject.put("lng", attraction.x);
-            jsonObject.put("lat time", attraction.y);
+            jsonObject.put("lat", attraction.x);
+            jsonObject.put("lng", attraction.y);
         }
 
         return jsonObject.toString();

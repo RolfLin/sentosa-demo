@@ -33,16 +33,16 @@ public class RecommendRoutes {
                 jsonObjectForAttraction.put("name", attraction.name);
                 jsonObjectForAttraction.put("image", attraction.image);
                 jsonObjectForAttraction.put("rating", attraction.rating);
-                jsonObjectForAttraction.put("lng", attraction.x);
-                jsonObjectForAttraction.put("lat", attraction.y);
+                jsonObjectForAttraction.put("lat", attraction.x);
+                jsonObjectForAttraction.put("lng", attraction.y);
 
                 JSONArray jsonArrayForPoints = new JSONArray();
                 Collection<Point> points = NaiveQueryImpl.instance().getPointInAnAttraction(attraction.id);
                 for (Point point: points) {
                     JSONObject jsonObjectForPoint = new JSONObject();
                     jsonObjectForPoint.put("name", point.name);
-                    jsonObjectForPoint.put("lng", point.x);
-                    jsonObjectForPoint.put("lat", point.y);
+                    jsonObjectForPoint.put("lat", point.x);
+                    jsonObjectForPoint.put("lng", point.y);
                     jsonArrayForPoints.put(jsonObjectForPoint);
                 }
 

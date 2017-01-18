@@ -36,8 +36,8 @@ public class GlobalPreview {
         JSONArray jsonArrayForPoints = new JSONArray();
         for (int i = 0; i < points.size(); i++) {
             JSONObject jsonObjectForPoint = new JSONObject();
-            jsonObjectForPoint.put("lng", points.get(i).x);
-            jsonObjectForPoint.put("lat", points.get(i).y);
+            jsonObjectForPoint.put("lat", points.get(i).x);
+            jsonObjectForPoint.put("lng", points.get(i).y);
             jsonObjectForPoint.put("count", pointCounts.get(i));
             jsonArrayForPoints.put(jsonObjectForPoint);
         }
@@ -76,8 +76,8 @@ public class GlobalPreview {
         JSONArray jsonArrayForPoints = new JSONArray();
         for (int i = 0; i < allPoints.size(); i++) {
             JSONObject jsonObjectForPoint = new JSONObject();
-            jsonObjectForPoint.put("lng", allPoints.get(i).x);
-            jsonObjectForPoint.put("lat", allPoints.get(i).y);
+            jsonObjectForPoint.put("lat", allPoints.get(i).x);
+            jsonObjectForPoint.put("lng", allPoints.get(i).y);
             jsonObjectForPoint.put("count", pointCounts.get(i));
             jsonArrayForPoints.put(jsonObjectForPoint);
         }
